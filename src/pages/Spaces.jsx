@@ -11,8 +11,17 @@ import CardSpace from "../components/cards/CardSpace";
 import { useState } from "react";
 import AlertDelete from "../components/forms/AlertDelete";
 import FormSpace from "../components/forms/FormSpace";
+import { useQuery } from "@tanstack/react-query";
+import { getSpaces } from "../lib/api";
 
 function Spaces() {
+
+  const {data, isLoading, isError} = useQuery({
+    queryKey: ['spaces'],
+    queryFn: getSpaces
+  })
+
+  // STATES
   const [openForm, setOpenForm] = useState( false);
   const [isEditing, setIsEditing] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -21,6 +30,9 @@ function Spaces() {
     name: null,
   });
 
+  console.log(data)
+
+  
   return (
     <div className="col-span-4 sm:col-span-9">
       <div className="rounded-lg shadow sm:p-6">
@@ -66,6 +78,7 @@ function Spaces() {
           resource={space}
         />
 
+{isError && "error" }
         <CardSpace
           edit={openForm}
           setOpenEdit={setOpenForm}

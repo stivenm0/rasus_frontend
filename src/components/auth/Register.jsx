@@ -19,8 +19,14 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useMutation } from "@tanstack/react-query";
+import { createUser } from "../../lib/api";
 
 function Register() {
+  
+  const registerMutation = useMutation({
+    mutationFn: createUser,
+  })
   
   const formSchema = z.object({
     name: z.string().min(10, "Mínimo 10 Caracteres"),
@@ -51,10 +57,8 @@ function Register() {
     },
   });
 
-  function onSubmit(values) {
-    console.log(values);
-  }
-
+  const onSubmit = (values)=> registerMutation.mutate(values);
+  
   return (
     <Dialog>
       <DialogTrigger className="self-start px-3 py-2 leading-none text-gray-200 border border-gray-800 rounded-lg focus:outline-none focus:shadow-outline bg-gradient-to-b hover:from-indigo-500 from-gray-900 to-black">
