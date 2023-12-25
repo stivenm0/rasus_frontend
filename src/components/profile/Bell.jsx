@@ -8,34 +8,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/components/ui/use-toast"
-import { Checkbox } from "@/components/ui/checkbox"
+import { useToast } from "@/components/ui/use-toast";
 import { RocketIcon } from "lucide-react";
-import { useState } from "react";
 
 function Bell() {
 
-  const {toast} = useToast()
-
-  const handleNotification = (checked)=>{
-      if (checked) {
-        toast({
-          title: "Notificaciones",
-          description: "Notificaciones Activadas",
-        });
-      } else {
-        toast({
-          title: "Notificaciones",
-          description: "Notificaciones Desactivadas",
-        });
-      }
-
-
-  }
-
-
-
-  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="p-2 outline-none">
@@ -58,22 +35,21 @@ function Bell() {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>
-        <div className="flex items-center space-x-2">
-      <Checkbox id="terms"  onCheckedChange={(checked)=> handleNotification(checked)}/>
-      <label 
-        htmlFor="terms"
-        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-      >
-        Notificaciones
-      </label>
-    </div>
+          <div className="flex items-center space-x-2">
+            <label
+              htmlFor="terms"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Notificaciones
+            </label>
+          </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-        <Alert className="max-w-full">
-          <RocketIcon className="w-4 h-4 " />
-          <AlertTitle>Alguien le dio click a Facebook</AlertTitle>
-        </Alert>
+          <Alert className="max-w-full">
+            <RocketIcon className="w-4 h-4 " />
+            <AlertTitle>Alguien le dio click a Facebook</AlertTitle>
+          </Alert>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

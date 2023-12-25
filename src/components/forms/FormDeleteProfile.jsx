@@ -19,15 +19,26 @@ import {
   import { zodResolver } from "@hookform/resolvers/zod";
   import { useForm } from "react-hook-form";
   import * as z from "zod";
+import { useMutation } from "@tanstack/react-query";
+import { deleteUser } from "../../lib/api";
+import { useNavigate } from "react-router-dom";
   
   
-  function FormDeleteProfile() {
+function FormDeleteProfile() {
 
+    const N = useNavigate();
+
+    const deleteUserMutations = useMutation({
+      mutationFn: deleteUser,
+      onSuccess: ()=>{
+       localStorage.clear();
+       N("/");
+      }
+    })
   
     const formSchema = z.object({
       confirmation: z.string().min(1, "Requerido")
       .refine((value) => value.toUpperCase().trim() === "BORRAR", `El valor no coincide con la palabra BORRAR`),
-
     });
   
     const form = useForm({
@@ -38,7 +49,7 @@ import {
     });
   
     function onSubmit() {
-        console.log('hecho')
+        deleteUserMutations.mutate()
     }
   
     return (

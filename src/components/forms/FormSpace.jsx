@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import {
   Sheet,
   SheetContent,
@@ -15,22 +13,51 @@ import {
     FormLabel,
     FormMessage,
   } from "@/components/ui/form";
- 
-  import { zodResolver } from "@hookform/resolvers/zod";
-  import { useForm } from "react-hook-form";
-  import * as z from "zod";
-  import { useToast } from "@/components/ui/use-toast"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useToast } from "@/components/ui/use-toast"
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { createSpace, updateSpace } from "../../lib/api";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import * as z from "zod";
+import { useEffect } from "react";
   
+function FormSpace({space, isEditing, open, setOpen}) {
 
-
-function FormSpace({isEditing, open, setOpen }) {
+    console.log(space)
 
     const { toast } = useToast()
+    const queryClient = useQueryClient()
+
+    const createSpaceMutation = useMutation({
+      mutationFn: createSpace,
+      onSuccess: ()=>{ 
+        queryClient.invalidateQueries("spaces");
+        toast({
+          title: "Espacio Creado",
+          description: "Espacio se creo con éxito"
+        })
+        form.reset();
+      }
+    })
+
+    const updateSpaceMutation = useMutation({
+      mutationFn: updateSpace,
+      onSuccess: ()=>{ 
+        queryClient.invalidateQueries("spaces");
+        toast({
+          title: "Espacio Editado",
+          description: "Espacio se edito con éxito"
+        })
+      },
+      onError: (er)=>{ console.log(er)}
+    })
      
+    
     const formSchema = z.object({
         name: z.string().min(1, "Requerido").max(50, "Máximo 100 Caracteres"),
         description: z.string().max(150, "Máximo 150 Caracteres"),
-  
       });
     
       const form = useForm({
@@ -41,13 +68,27 @@ function FormSpace({isEditing, open, setOpen }) {
         },
       });
     
-      function onSubmit() {
-        toast({
-            title: "Espacio Creado",
-            description: "Espacio se creo con éxito"
-        })
-          console.log('hecho')
+      const onSubmit = (values)=>{ 
+        console.log(values)
+        if(isEditing){
+          updateSpaceMutation.mutate({...values, id: space.id});
+        }else{
+          createSpaceMutation.mutate(values);          
+        }
       }
+
+      useEffect(() => {
+        if (isEditing && space) {
+          form.setValue('name', space.name);
+          form.setValue('description', space.description || '');
+        }
+        else{
+          form.setValue('name', '');
+          form.setValue('description', '');
+        }
+      }, [isEditing, space, form]);
+
+      
     
   return (
     <Sheet open={open} onOpenChange={()=> setOpen(!open)}>
@@ -66,8 +107,8 @@ function FormSpace({isEditing, open, setOpen }) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Nombre del espacio </FormLabel>
-                      <FormControl>
-                        <Input placeholder="Ingrese el Nombre" {...field} />
+                      <FormControl >
+                        <Input placeholder="Ingrese el Nombre" {...field}   />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -80,7 +121,7 @@ function FormSpace({isEditing, open, setOpen }) {
                     <FormItem>
                       <FormLabel>Descripción del espacio *opcional* </FormLabel>
                       <FormControl>
-                        <Input placeholder="Ingrese la descripción" {...field} />
+                        <Input placeholder="Ingrese la descripción" {...field } />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

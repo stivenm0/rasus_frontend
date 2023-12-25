@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast"
 
-function CardLink({setOpenDelete, setOpenEdit, setLink, setIsEditing}) {
+function CardLink({setOpenDelete, setOpenEdit, setLink, setIsEditing, link}) {
   const {toast} = useToast();
 
   const copy = (link= "")=> {
@@ -24,7 +24,7 @@ function CardLink({setOpenDelete, setOpenEdit, setLink, setIsEditing}) {
     <div className="flex items-center overflow-hidden bg-white border rounded-sm shadow">
       <div className="px-4 text-gray-700">
         <h1 className="flex items-center text-lg font-semibold tracking-wider text-blue-800">
-          Facebook
+          {link.name}
           <DropdownMenu>
             <DropdownMenuTrigger>
               <svg
@@ -49,7 +49,7 @@ function CardLink({setOpenDelete, setOpenEdit, setLink, setIsEditing}) {
                 onClick={()=> {
                   setOpenEdit(true)
                   setIsEditing(true)
-                  setLink({id:2 , name: "link facebook"})
+                  setLink({id: link.id , name: link.name})
                 }}
               >
                 editar
@@ -59,7 +59,7 @@ function CardLink({setOpenDelete, setOpenEdit, setLink, setIsEditing}) {
                 className="w-full px-2 py-1 text-sm font-semibold text-white uppercase bg-red-400 rounded shadow hover:bg-red-500"
                 onClick={()=> {
                   setOpenDelete(true)
-                  setLink({id:2 , name: "link facebook"})
+                  setLink({id: link.id , name: link.name})
                 }}
               >
                 Eliminar
@@ -71,12 +71,10 @@ function CardLink({setOpenDelete, setOpenEdit, setLink, setIsEditing}) {
         <div className="flex items-center justify-between w-full max-w-sm px-2 py-1 font-mono text-sm text-gray-800 bg-white border border-gray-800 rounded-md">
           <div className="flex gap-1">
             <span className="w-11/12 h-6 overflow-hidden">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat
-              iusto voluptate sapiente officiis voluptas eveniet minima aliquid
-              vero. Doloribus, molestias!
+              {link.link}
             </span>
           </div>
-          <span
+          <span onClick={()=>copy(link.link)}
             className="flex w-5 h-5 text-gray-800 cursor-pointer hover:scale-125"
             title="Copiar al Portapapeles"
           >
@@ -101,12 +99,10 @@ function CardLink({setOpenDelete, setOpenEdit, setLink, setIsEditing}) {
         <div className="flex items-center justify-between w-full max-w-sm px-2 py-1 font-mono text-sm text-gray-800 bg-blue-100 border border-gray-800 rounded-md">
           <div className="flex w-full gap-1">
             <span className="block h-6 max-w-full overflow-hidden text-blue-900 ">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat
-              iusto voluptate sapiente officiis voluptas eveniet minima aliquid
-              vero. Doloribus, molestias!
+              {link.short}
             </span>
           </div>
-          <span onClick={()=>copy("LINK")}
+          <span onClick={()=>copy(link.short)}
             className="flex w-5 h-5 text-gray-800 cursor-pointer hover:scale-125"
             title="Copiar al Portapapeles"
           >
@@ -127,7 +123,7 @@ function CardLink({setOpenDelete, setOpenEdit, setLink, setIsEditing}) {
             </svg>
           </span>
         </div>
-        <p className="text-lg">clicks: 39,265</p>
+        <p className="text-lg">clicks: {link.clicks}</p>
       </div>
     </div>
   );

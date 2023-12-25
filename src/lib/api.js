@@ -6,29 +6,19 @@ export const client = axios.create({
     headers: {
       'Accept': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
-      'Authorization': 'Bearer 17|JACjn8CwkR4XbWx7ZRbOFymM8COBpxR1iR507YDvbc47fb3e'
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      // 'Content-Type': 'multipart/form-data' 
     },
     withCredentials: true,
-    withXSRFToken: true
+    // withXSRFToken: true
   });
-
-// client.interceptors.request.use(
-//     config => {
-//       const token = localStorage.getItem('token'); // o de donde lo estés recuperando
-//       if (token) {
-//         config.headers.Authorization = `Bearer ${token}`;
-//       }
-//       return config;
-//     },
-//     error => {
-//       return Promise.reject(error);
-//     }
-//   );
 
 // Request users
 export const login = (credentials)=> client.post('/api/login', credentials);
 
 export const logout = async ()=> await client.get("/api/logout");
+
+export const getUser = async ()=> await client.get("/api/users/me");
 
 export const createUser = (user)=> client.post("/api/users", user);
 

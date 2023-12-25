@@ -21,11 +21,21 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useMutation } from "@tanstack/react-query";
 import { createUser } from "../../lib/api";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   
+  const N = useNavigate()
+
   const registerMutation = useMutation({
     mutationFn: createUser,
+    onSuccess: ({data: {data: {token}}})=>{
+      localStorage.setItem("token", token);
+      N("/perfil");   
+    },
+    onError: (err)=>{
+      console.log(err)
+    }
   })
   
   const formSchema = z.object({

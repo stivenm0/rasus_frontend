@@ -19,12 +19,31 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { client, updateUser } from "../../lib/api";
+import { useToast } from "@/components/ui/use-toast"
 
 
-function FormUpdateProfile() {
+function FormUpdateProfile({user}) {
 
+  const queryClient = useQueryClient();
 
-  const MAX_FILE_SIZE = 5000000000000;
+  const {toast } = useToast();
+
+  const userUpdateMutation = useMutation({
+    mutationFn: updateUser,
+    onSuccess: (data)=>{
+      console.log(data)
+      // console.log(client.defaults.headers)
+      // queryClient.invalidateQueries("user");
+      toast({
+        title: "Actualización Correcta",
+        description: "Tus datos se actualizaron correctamente"
+      });
+    }
+  })
+
+  const MAX_FILE_SIZE = 10000;
   const ACCEPTED_IMAGE_TYPES = [
     "image/jpeg",
     "image/jpg",
@@ -35,10 +54,10 @@ function FormUpdateProfile() {
 
   const formSchema = z.object({
     photo: z.any()
-    .refine((file) => true, `Max image size 5MB.`)
+    .refine((photo) => photo? photo?.size <= MAX_FILE_SIZE: true, `La imagen no debe ser mayor a 10MB.`)
     .refine(
-      (file) => true,
-      "Only .jpg, .jpeg, .png and .webp formats are supported."
+      (photo) => photo? ACCEPTED_IMAGE_TYPES.includes(photo.type): true,
+      "Solo se permite .jpg, .jpeg, .png and .webp"
     ),
     name: z.string().min(10, "Mínimo 10 Caracteres"),
     nickname: z
@@ -54,18 +73,12 @@ function FormUpdateProfile() {
 
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      photo: null,
-      name: "",
-      nickname: "",
-      email: "",
-    },
+    defaultValues: {...user, photo: null},
   });
 
-  function onSubmit(data, e) {
-    console.log(data)
-    console.log(e.target.photo.files)
-  }
+  const onSubmit = (values)=> {
+    userUpdateMutation.mutate(values)};
+  
 
   return (
     <Dialog>
@@ -81,14 +94,18 @@ function FormUpdateProfile() {
               <FormField
                 control={form.control}
                 name="photo"
-                render={({ field }) => (
+                render={({ field: { value, onChange, ...field } }) => (
                   <FormItem>
                     <FormLabel>Foto de Perfil</FormLabel>
                     <FormControl>
                       <Input 
                         type="file" 
                         className="block w-full mt-2 text-sm file:mr-4 file:rounded-md file:border-0 file:bg-purple-500 file:py-2 file:px-4 file:text-sm file:font-semibold file:text-white hover:file:bg-purple-700 focus:outline-none disabled:pointer-events-none disabled:opacity-60"
-                        {...field}
+                        {...field} {...field}
+                        value={value?.fileName}
+                        onChange={(event) => {
+                          onChange(event.target.files[0]);
+                        }}
                       />
                     </FormControl>
                     <FormMessage />

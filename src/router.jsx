@@ -1,9 +1,18 @@
 
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Spaces from "./pages/Spaces";
 import Space from "./pages/Space";
+
+// const N = useNavigate();
+
+// function guest (element){
+//     if(localStorage.getItem("token")){
+//         N("profile");
+//     }
+//     return element
+// }
 
 
 const router = createBrowserRouter([
@@ -12,15 +21,15 @@ const router = createBrowserRouter([
         element: <Home/>,
     },
     {
-        path: "/:user",
+        path: "/perfil",
         element: <Profile/>,
         children: [
             {
-                path: "/:user",
+                path: "/perfil",
                 element: <Spaces/>,
             },
             {
-                path: "/:user/:space",
+                path: "/perfil/:space",
                 element: <Space/>,
             }
         ]

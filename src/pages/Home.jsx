@@ -1,8 +1,17 @@
+import { useEffect } from "react"
 import Login from "../components/auth/Login"
 import Register from "../components/auth/Register"
+import { useNavigate } from "react-router-dom"
 
 function Home() {
+  const N = useNavigate()
 
+  useEffect(() => {
+    if(localStorage.getItem("token")){
+      N('/perfil')
+    }
+  }, [])
+  
 
   return (
     <div className="container p-8 mx-auto overflow-hidden text-gray-300 md:rounded-lg md:p-10 lg:p-12">
@@ -16,7 +25,7 @@ function Home() {
 
         <div className="h-32 md:h-40"></div>
 
-        <p className="max-w-5xl font-sans text-4xl  font-bold text-gray-200 lg:text-7xl lg:pr-24 md:text-6xl">
+        <p className="max-w-5xl font-sans text-4xl font-bold text-gray-200 lg:text-7xl lg:pr-24 md:text-6xl">
             Enlaces simplificados, experiencias mejoradas.
         </p>
         <div className="h-10"></div>
