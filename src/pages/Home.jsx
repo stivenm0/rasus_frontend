@@ -1,15 +1,12 @@
 import { useEffect } from "react"
 import Login from "../components/auth/Login"
 import Register from "../components/auth/Register"
-import { useNavigate } from "react-router-dom"
 
 function Home() {
-  const N = useNavigate()
+  
 
   useEffect(() => {
-    if(localStorage.getItem("token")){
-      N('/perfil')
-    }
+    document.title = "rasus";
   }, [])
   
 

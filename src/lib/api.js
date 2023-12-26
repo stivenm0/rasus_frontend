@@ -13,16 +13,30 @@ export const client = axios.create({
     // withXSRFToken: true
   });
 
+client.interceptors.request.use(
+    (config) => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+
+
 // Request users
 export const login = (credentials)=> client.post('/api/login', credentials);
 
-export const logout = async ()=> await client.get("/api/logout");
+export const logout = ()=> client.post("/api/logout");
 
 export const getUser = async ()=> await client.get("/api/users/me");
 
 export const createUser = (user)=> client.post("/api/users", user);
 
-export const updateUser = (user)=> client.put("/api/users", user)
+export const updateUser = (user)=> client.post("/api/users/edit", user)
 
 export const deleteUser = ()=> client.delete("/api/users");
 

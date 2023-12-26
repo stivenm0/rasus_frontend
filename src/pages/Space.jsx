@@ -7,13 +7,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import CardLink from "../components/cards/CardLink";
 import AlertDelete from "../components/forms/AlertDelete";
 import FormLink from "../components/forms/FormLink";
 import { useQuery } from "@tanstack/react-query";
 import { showSpace } from "../lib/api";
 import LLoading from "../components/profile/LLoading";
+import ElementsNull from "../components/profile/ElementsNull";
 
 function Space() {
   const { space } = useParams();
@@ -30,6 +31,7 @@ function Space() {
   const [link, setLink] = useState({
     id: null,
     name: null,
+    link: null
   });
 
   useEffect(() => {
@@ -43,8 +45,8 @@ function Space() {
   }
 
   if(data){
+    const {space: {id}, links} = data.data.data
 
-    const links = data.data.data
     return (
       <section>
         <h2 className="flex items-center mt-6 mb-4 text-xl font-bold text-purple-500">
@@ -79,7 +81,7 @@ function Space() {
             </DropdownMenuContent>
           </DropdownMenu>
         </h2>
-        <FormLink open={openForm} setOpen={setOpenForm} isEditing={isEditing} />
+        <FormLink open={openForm} link={link} setOpen={setOpenForm} isEditing={isEditing} space_id={id} />
   
         <AlertDelete
           open={openDelete}
@@ -87,8 +89,12 @@ function Space() {
           resourceType={"link"}
           resource={link}
         />
-        <div className="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-2 xl:grid-cols-4 sm:px-8">
-          {links.map((link, index)=>(
+        
+        {links.length <1 && <ElementsNull elements="Enlaces"/> }
+        
+        <div className="grid grid-cols-1 gap-4 px-4 mt-8 sm:px-4 sm:grid-cols-2">
+          { 
+              links.map((link, index)=>(
               <CardLink key={index} link={link}
               setOpenDelete={setOpenDelete}
               setLink={setLink}
@@ -96,7 +102,6 @@ function Space() {
               setOpenEdit={setOpenForm}
             />
           ))
-            
           }
           
         </div>

@@ -19,7 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useMutation} from "@tanstack/react-query";
-import { login } from "../../lib/api";
+import {  login } from "../../lib/api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -32,8 +32,8 @@ function Login() {
     const loginMutation = useMutation({
       mutationFn: login, 
       onSuccess: ({data: {data: {token}}})=>{
-        N('/perfil') 
         localStorage.setItem("token", token)
+        N('/perfil') 
       },
       onError: ()=> setError(true)
     })

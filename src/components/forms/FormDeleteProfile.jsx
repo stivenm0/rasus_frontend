@@ -54,7 +54,7 @@ function FormDeleteProfile() {
   
     return (
       <Dialog>
-        <DialogTrigger className="bg-red-700 text-white hover:bg-red-800 border  px-3 py-1.5 rounded-lg text-sm font-semibold">
+        <DialogTrigger className="bg-red-700 text-white hover:bg-red-800  px-3 py-1.5 rounded-lg text-sm font-semibold">
          Borrar Cuenta
         </DialogTrigger>
         <DialogContent>

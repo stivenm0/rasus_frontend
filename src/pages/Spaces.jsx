@@ -17,6 +17,7 @@ import LLoading from "../components/profile/LLoading";
 import ElementsNull from "../components/profile/ElementsNull";
 
 function Spaces() {
+  
   const { data, isLoading, isError } = useQuery({
     queryKey: ["spaces"],
     queryFn: getSpaces,

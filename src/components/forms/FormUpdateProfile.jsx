@@ -32,15 +32,14 @@ function FormUpdateProfile({user}) {
 
   const userUpdateMutation = useMutation({
     mutationFn: updateUser,
-    onSuccess: (data)=>{
-      console.log(data)
-      // console.log(client.defaults.headers)
-      // queryClient.invalidateQueries("user");
+    onSuccess: ()=>{
+      queryClient.invalidateQueries("user");
       toast({
         title: "Actualización Correcta",
         description: "Tus datos se actualizaron correctamente"
       });
-    }
+    },
+    onError: (e)=> console.log(e)
   })
 
   const MAX_FILE_SIZE = 10000;
@@ -77,7 +76,13 @@ function FormUpdateProfile({user}) {
   });
 
   const onSubmit = (values)=> {
-    userUpdateMutation.mutate(values)};
+    const form = new FormData()
+    form.append("name", values.name);
+    form.append("nickname", values.nickname);
+    form.append("email", values.email);
+    form.append("photo", values.photo);
+    userUpdateMutation.mutate(form)
+  };
   
 
   return (

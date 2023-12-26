@@ -1,28 +1,22 @@
 
-import { createBrowserRouter, useNavigate } from "react-router-dom";
+import { createBrowserRouter} from "react-router-dom";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Spaces from "./pages/Spaces";
 import Space from "./pages/Space";
-
-// const N = useNavigate();
-
-// function guest (element){
-//     if(localStorage.getItem("token")){
-//         N("profile");
-//     }
-//     return element
-// }
+import App from "./components/auth/App";
+import Guest from "./components/auth/guest";
+import ShortLink from "./pages/ShortLink";
 
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Home/>,
+        element: <Guest><Home/></Guest> ,
     },
     {
         path: "/perfil",
-        element: <Profile/>,
+        element: <App><Profile/></App> ,
         children: [
             {
                 path: "/perfil",
@@ -34,6 +28,10 @@ const router = createBrowserRouter([
             }
         ]
     },
+    {
+        path: "/:short",
+        element: <ShortLink/>
+    }
 
 ]);
 

@@ -43,7 +43,7 @@ function AlertDelete({open, setOpen, resourceType, resource}) {
   const deleteLinkMutation = useMutation({
     mutationFn: deleteLink,
     onSuccess: ()=>{
-      //  queryClient.invalidateQueries('links')
+       queryClient.invalidateQueries('space')
        deleteSuccess()
     },
     onError: ()=> deleteError()

@@ -21,12 +21,11 @@ import { createSpace, updateSpace } from "../../lib/api";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import * as z from "zod";
-import { useEffect } from "react";
+import { useEffect} from "react";
   
 function FormSpace({space, isEditing, open, setOpen}) {
 
-    console.log(space)
-
+  
     const { toast } = useToast()
     const queryClient = useQueryClient()
 
@@ -39,7 +38,8 @@ function FormSpace({space, isEditing, open, setOpen}) {
           description: "Espacio se creo con éxito"
         })
         form.reset();
-      }
+      },
+      onError: (er)=>{ console.log(er)}
     })
 
     const updateSpaceMutation = useMutation({
@@ -57,7 +57,7 @@ function FormSpace({space, isEditing, open, setOpen}) {
     
     const formSchema = z.object({
         name: z.string().min(1, "Requerido").max(50, "Máximo 100 Caracteres"),
-        description: z.string().max(150, "Máximo 150 Caracteres"),
+        description: z.string().min(1, "Requerido").max(150, "Máximo 150 Caracteres"),
       });
     
       const form = useForm({
