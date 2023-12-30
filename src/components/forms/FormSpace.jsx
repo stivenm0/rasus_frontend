@@ -20,9 +20,9 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { createSpace, updateSpace } from "../../lib/api";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import * as z from "zod";
+import { Textarea } from "@/components/ui/textarea"
 import { useEffect} from "react";
-  
+import * as z from "zod";  
 function FormSpace({space, isEditing, open, setOpen}) {
 
   
@@ -119,9 +119,9 @@ function FormSpace({space, isEditing, open, setOpen}) {
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Descripción del espacio *opcional* </FormLabel>
+                      <FormLabel>Descripción del espacio </FormLabel>
                       <FormControl>
-                        <Input placeholder="Ingrese la descripción" {...field } />
+                        <Textarea placeholder="Descripción" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

@@ -17,7 +17,6 @@ import LLoading from "../components/profile/LLoading";
 import ElementsNull from "../components/profile/ElementsNull";
 
 function Spaces() {
-  
   const { data, isLoading, isError } = useQuery({
     queryKey: ["spaces"],
     queryFn: getSpaces,
@@ -32,10 +31,12 @@ function Spaces() {
     name: "",
   });
 
-  if(isLoading){ return <LLoading/> }
+  if (isLoading || isError) {
+    return <LLoading />;
+  }
 
-  if(data){
-    const spaces = data.data.data
+  if (data) {
+    const spaces = data.data.data;
     return (
       <div className="col-span-4 sm:col-span-9">
         <div className="rounded-lg shadow sm:p-6">
@@ -82,16 +83,18 @@ function Spaces() {
             isEditing={isEditing}
             space={space}
           />
-  
+
           <AlertDelete
             open={openDelete}
             setOpen={setOpenDelete}
             resourceType={"space"}
             resource={space}
           />
-  
-          {spaces.length < 1? (<ElementsNull elements="Espacios"/> ) :
-          spaces.map((space, index) => (
+
+          {spaces.length < 1 ? (
+            <ElementsNull elements="Espacios" />
+          ) : (
+            spaces.map((space, index) => (
               <CardSpace
                 key={index}
                 space={space}
@@ -101,18 +104,12 @@ function Spaces() {
                 setOpenDelete={setOpenDelete}
                 setSpace={setSpace}
               />
-            ))}
-
-          
+            ))
+          )}
         </div>
       </div>
     );
   }
-
-
-
-  
-
 }
 
 export default Spaces;

@@ -1,22 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 import { showLink } from "../lib/api";
 import LLoading from "../components/profile/LLoading";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import E404 from "../pages/E404";
+import { Link, useParams } from "react-router-dom";
 
 function ShortLink() {
 
   const {short} = useParams()
-  const N = useNavigate();
 
 
-  const { data, isLoading } = useQuery({
+
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["link"],
     queryFn: ()=> showLink(short),
   });
 
-  if (isLoading) {
-    <LLoading />;
-  }
+  if (isLoading) { return <LLoading />;}
+
+  if(isError){ return <E404/> }
 
   if (data) {
     const link = data.data.data;

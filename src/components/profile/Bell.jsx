@@ -8,10 +8,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/components/ui/use-toast";
+// import { useToast } from "@/components/ui/use-toast";
 import { RocketIcon } from "lucide-react";
+import { useEffect } from "react";
 
 function Bell() {
+
+  useEffect(() => {
+    let notifications =setInterval(()=> console.log("hola"), 5000 )
+  
+    return () => {
+      notifications
+    }
+  }, [])
+  
 
   return (
     <DropdownMenu>

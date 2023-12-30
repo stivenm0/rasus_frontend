@@ -20,7 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { client, updateUser } from "../../lib/api";
+import { updateUser } from "../../lib/api";
 import { useToast } from "@/components/ui/use-toast"
 
 
@@ -32,7 +32,7 @@ function FormUpdateProfile({user}) {
 
   const userUpdateMutation = useMutation({
     mutationFn: updateUser,
-    onSuccess: ()=>{
+    onSuccess: ()=>{ 
       queryClient.invalidateQueries("user");
       toast({
         title: "Actualización Correcta",

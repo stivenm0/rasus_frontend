@@ -51,7 +51,7 @@ function FormCreateLinkSpace() {
 
   const formSchema = z.object({
     space_id: z.string().max(50, "Máximo 100 Caracteres")
-    .refine((space_id)=> space_id != "0" , "Debe Seleccionar un Espacio"),
+    .refine((space_id)=> space_id != 0 , "Debe Seleccionar un Espacio"),
     name: z.string().min(1, "Requerido").max(50, "Máximo 100 Caracteres"),
     link: z.string().max(150, "Máximo 150 Caracteres"),
   });
@@ -59,7 +59,7 @@ function FormCreateLinkSpace() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      space_id: "",
+      space_id: 0,
       name: "",
       link: "",
     },
@@ -67,7 +67,7 @@ function FormCreateLinkSpace() {
 
   const onSubmit = (values)=> {
       createLinkMutation.mutate(values);
-      // console.log(values)
+
       
   }
 

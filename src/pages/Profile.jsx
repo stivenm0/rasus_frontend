@@ -4,14 +4,12 @@ import FormUpdateProfile from "../components/forms/FormUpdateProfile";
 import FormDeleteProfile from "../components/forms/FormDeleteProfile";
 import Bell from "../components/profile/Bell";
 import { Toaster } from "@/components/ui/toaster";
-import { client, getUser, logout } from "../lib/api";
+import { getUser, logout } from "../lib/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import LLoading from "../components/profile/LLoading";
 
 function Profile() {
-
   const N = useNavigate();
-
   
   const { data, isLoading } = useQuery({
     queryKey: ["user"],
@@ -23,8 +21,7 @@ function Profile() {
     onSuccess: ()=>{
       localStorage.clear();
       N("/");
-    },
-    onError:(e)=> console.log(e) 
+    } 
   });
 
 
@@ -32,12 +29,9 @@ function Profile() {
 
   useEffect(() => {
     document.title = "perfil - rasus";
-    console.log(client.defaults.headers)
   }, []);
 
-  if (isLoading) {
-    return <LLoading />;
-  }
+  if (isLoading) { return <LLoading />; }
 
   if (data) {
     const user = data.data.data;
@@ -55,7 +49,7 @@ function Profile() {
                 <div className="flex-shrink-0 w-20 mx-auto mb-6 md:mr-6">
                   <img
                     className="object-cover rounded-full"
-                    src="https://tailwindflex.com/public/images/user.png"
+                    src={user.photo}
                   />
                 </div>
                 <div className="flex-grow text-center text-gray-200 md:text-left">
