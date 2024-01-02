@@ -22,13 +22,15 @@ import * as z from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUser } from "../../lib/api";
 import { useToast } from "@/components/ui/use-toast"
+import { useState } from "react";
 
 
 function FormUpdateProfile({user}) {
 
   const queryClient = useQueryClient();
-
   const {toast } = useToast();
+
+  const [error, setError] = useState(null)
 
   const userUpdateMutation = useMutation({
     mutationFn: updateUser,
@@ -39,10 +41,10 @@ function FormUpdateProfile({user}) {
         description: "Tus datos se actualizaron correctamente"
       });
     },
-    onError: (e)=> console.log(e)
+    onError: (e)=> setError(e.response.data.errors.email)
   })
 
-  const MAX_FILE_SIZE = 10000;
+  const MAX_FILE_SIZE = 100000;
   const ACCEPTED_IMAGE_TYPES = [
     "image/jpeg",
     "image/jpg",
@@ -80,7 +82,9 @@ function FormUpdateProfile({user}) {
     form.append("name", values.name);
     form.append("nickname", values.nickname);
     form.append("email", values.email);
-    form.append("photo", values.photo);
+    if(values.photo){
+      form.append("photo", values.photo);
+    }
     userUpdateMutation.mutate(form)
   };
   
@@ -93,7 +97,7 @@ function FormUpdateProfile({user}) {
       <DialogContent>
         <DialogHeader className="text-left text-gray-50">
           <DialogTitle className="text-center">Editar Perfil</DialogTitle>
-
+          {error && <p className="text-center text-orange-300 bg-gray-800">{error}</p>}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit) }  className="space-y-4">
               <FormField

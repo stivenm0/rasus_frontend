@@ -32,6 +32,10 @@ export const createUser = (user)=> client.post("/api/users", user);
 
 export const logout = ()=> client.post("/api/logout");
 
+export const notifications = async ()=> await client.get('/api/notifications'); 
+
+export const deleteNotifications = ()=>  client.delete('/api/notifications'); 
+
 
 export const getUser = async ()=> await client.get("/api/v1/users/me");
 

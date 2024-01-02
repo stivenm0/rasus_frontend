@@ -26,8 +26,6 @@ import { useEffect} from "react";
 
 function FormLink({ isEditing, open, setOpen, space_id, link }) {
 
-
-  console.log(link)
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -42,7 +40,6 @@ function FormLink({ isEditing, open, setOpen, space_id, link }) {
       form.reset()
       form.setValue("space_id", space_id)
     },
-    onError: (e) => console.log(e)
   })
 
   const updateLinkMutation = useMutation({
@@ -73,7 +70,6 @@ function FormLink({ isEditing, open, setOpen, space_id, link }) {
 
   useEffect(() => {
     form.setValue("space_id", space_id)
-    console.log(space_id)
 
     if(isEditing && link){
       form.setValue("name", link.name)
