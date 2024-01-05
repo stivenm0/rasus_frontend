@@ -3,8 +3,8 @@ Rasus: Transforma tus Enlaces, Simplifica tu Mundo
 Rasus es acortador de enlaces; tu compañero digital para simplificar la gestión y compartir de URL.
 
 ## Demostración
-![rasus](./d0cs/rasus.png)
-![rasus](./d0cs/rasus2.png)
+![rasus](./d0cs/rasus.webp)
+![rasus](./d0cs/rasus2.webp)
 
 video: https://youtu.be/yB9iMueEPH8
 
